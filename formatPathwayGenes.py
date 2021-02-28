@@ -1,7 +1,7 @@
 from Bio import SeqIO
 
 
-def run():
+def separatePathwaySequences():
     gene_locations_BTCnBK = {"thiolase": [1462, 2647],
                              "crotonase": [2696, 3488],
                              "beta hydroxybutyryl-CoA dehydrogenase": [3639, 4512],
