@@ -5,6 +5,7 @@
 
 import formatPathwayGenes
 import formatSpecies
+import Control
 
 
 def print_hi(name):
@@ -14,9 +15,10 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    formatPathwayGenes.separatePathwaySequences()
-    names = formatSpecies.separateSpecies()
-    formatSpecies.file_info(names)
+    #formatPathwayGenes.separatePathwaySequences()
+    #names = formatSpecies.separateSpecies()
+    #formatSpecies.file_info(names)
+    Control.run_control()
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
