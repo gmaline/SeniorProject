@@ -6,6 +6,7 @@
 import formatPathwayGenes
 import formatSpecies
 import Control
+import Analysis
 
 
 def print_hi(name):
@@ -18,7 +19,14 @@ if __name__ == '__main__':
     #formatPathwayGenes.separatePathwaySequences()
     #names = formatSpecies.separateSpecies()
     #formatSpecies.file_info(names)
-    Control.run_control()
+    #Control.run_control()
+    species_name = "Eubacterium_rectale_DSM_17629"
+    protein_name = "thiolase"
+
+    db = Analysis.buildSpeciesDB(species_name)
+    results = Analysis.alignSequence(species_name, protein_name, db)
+
+    Analysis.parseResults(results, species_name, protein_name, "out1.csv")
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
