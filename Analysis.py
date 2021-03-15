@@ -32,11 +32,25 @@ def alignSequence(species_name, protein_name, db_name):
     out_file_location = "BlastResults\\"
     out_file = out_file_location + species_name + protein_name + "_blastresults.xml"
 
-    query_file = protein_name + ".fasta"
+    query_file = "Proteins\\" + protein_name + ".fasta"
     tblastn_cmd = NcbitblastnCommandline(query=query_file, db=db_name, outfmt=5, out=out_file)
     stdout, stderr = tblastn_cmd()
 
     return out_file
+
+# Name: openOutFile
+# Summary: Creates the output file and writes its header.
+# Parameters: csv_out - the name of the output file
+# Returns: NA
+def openOutFile(csv_out):
+    with open("CSVResults\\" + csv_out, 'w', newline='') as out_file:
+        writer =csv.writer(out_file)
+        header = ["alignment#", "hsp#", "species_name", "query_protein",
+                  "hit_title", "%identity", "%query_cover", "evalue",
+                  "align_length", "score", "query_start", "query_end",
+                  "sbjct_start", "sbjct_end", "query", "sbjct", "identities",
+                  "gaps", "positives", "bits", "out_file"]
+        writer.writerow(header)
 
 # Name: parseResults
 # Summary: Parses XML results to create a csv output of significant hits.
@@ -49,16 +63,11 @@ def parseResults(xmlFile, species_name, protein_name,  csv_out):
     result_handle = open(xmlFile)
     blast_records = NCBIXML.parse(result_handle)
 
-    sequence = SeqIO.read(protein_name + ".fasta", "fasta")
+    sequence = SeqIO.read("Proteins\\" + protein_name + ".fasta", "fasta")
 
     with open("CSVResults\\" + csv_out, 'a', newline='') as out_file:
         writer =csv.writer(out_file)
-        header = ["alignment#", "hsp#", "species_name", "query_protein",
-                  "hit_title", "%identity", "%query_cover", "evalue",
-                  "align_length", "score", "query_start", "query_end",
-                  "sbjct_start", "sbjct_end", "query", "sbjct", "identities",
-                  "gaps", "positives", "bits", "out_file"]
-        writer.writerow(header)
+
         for record in blast_records:
             alignment_num = 0
             for alignment in record.alignments:

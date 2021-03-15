@@ -10,7 +10,7 @@ def separateSpecies():
     # for each species
     # Pulls the species name from the header using re
     for record in SeqIO.parse(file, "fasta"):
-        speciesHeader = re.findall(' \[(.*?)\]', str(record.description))
+        speciesHeader = re.findall(' \[([^\[]*)\]$', str(record.description))
         # Pulls the last substring found that matches the regular expression
         thisSpecies = speciesHeader[len(speciesHeader) - 1]
 
