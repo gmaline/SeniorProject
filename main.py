@@ -38,9 +38,11 @@ if __name__ == '__main__':
     # Control.run_control()
 
     Analysis.openOutFile2()
+    Analysis.openOutFile3()
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     for letter in alphabet:
         Analysis.parseCSV("CSVResults\\" + letter + ".csv")
+        Analysis.parseCSVOldVersion("CSVResults\\" + letter + ".csv")
 
 
 
@@ -50,6 +52,8 @@ if __name__ == '__main__':
                     "electron transfer flavoprotein beta-subunit",
                     "butyryl-COA-transferase", "phoasephate butyryltransferase",
                     "butyrate kinase"]
+
+
 
     # Controls: Run on 3/15/2021 at 4:37 pm
     # csv_out = "control.csv"

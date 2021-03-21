@@ -115,11 +115,138 @@ def openOutFile2():
                   "butyrate kinase", "definite_BCT", "definite_BK"]
         write_out.writerow(header)
 
+def openOutFile3():
+    with open("scored_results_extra.csv", 'w', newline='') as outfile:
+        write_out = csv.writer(outfile)
+
+        header = ["species", "core", "BCT", "BK", "thiolase",
+                  "beta hydroxybutyryl-CoA dehydrogenase",
+                  "crotonase", "butyryl-CoA dehydrogenase",
+                  "electron transfer flavoprotein alpha-subunit",
+                  "electron transfer flavoprotein beta-subunit",
+                  "butyryl-COA-transferase", "phoasephate butyryltransferase",
+                  "butyrate kinase", "definite_BCT", "definite_BK"]
+        write_out.writerow(header)
+
 # Name: parseCSV
 # Summary: Parses CSV results to score each bacteria.
 # Parameters: csv_in - the csv file to score species from
 # Returns: NA
 def parseCSV(csv_in):
+    protein_namesCore = ["thiolase", "beta hydroxybutyryl-CoA dehydrogenase",
+                         "crotonase", "butyryl-CoA dehydrogenase",
+                         "electron transfer flavoprotein alpha-subunit",
+                         "electron transfer flavoprotein beta-subunit"]
+    protein_namesBCT = ["butyryl-COA-transferase"]
+    protein_namesBK = ["phoasephate butyryltransferase", "butyrate kinase"]
+    # the cutoff for identity that will be considered for a protein score
+    threshold = 60
+    temp_dict = {}
+
+    current_species = ""
+    temp_dict_prot = {}
+    template_temp_dict_prot = {}
+    for protein in protein_namesBK:
+        temp_dict_prot[protein] = ""
+        template_temp_dict_prot[protein] = ""
+    for protein in protein_namesBCT:
+        temp_dict_prot[protein] = ""
+        template_temp_dict_prot[protein] = ""
+    for protein in protein_namesCore:
+        temp_dict_prot[protein] = ""
+        template_temp_dict_prot[protein] = ""
+
+
+    with open(csv_in, 'r') as in_file:
+        scorer = csv.reader(in_file, delimiter=',')
+        row_num = 0
+        for row in scorer:
+            if row_num > 0:
+                species_name = row[2]
+
+                if not dict_contains(species_name, temp_dict):
+                    temp_dict[species_name] = []
+
+                # Save results in a temporary list and create new entry
+                temp_list = temp_dict[species_name]
+                temp_list.append([row[3], float(row[5])])
+                temp_dict[species_name] = temp_list
+            row_num += 1
+    in_file.close()
+
+    with open("scored_results_extra.csv", 'a', newline='') as outfile:
+        write_out = csv.writer(outfile)
+
+        for key in temp_dict.keys():
+            # If there is a protein that reaches the threshold
+            if reaches_threshold(temp_dict[key], threshold):
+                total_scoreCore = 0
+                total_scoreBCT = 0
+                total_scoreBK = 0
+                protein_dict = {
+                    "thiolase": 0,
+                    "beta hydroxybutyryl-CoA dehydrogenase": 0,
+                    "crotonase": 0,
+                    "butyryl-CoA dehydrogenase": 0,
+                    "electron transfer flavoprotein alpha-subunit": 0,
+                    "electron transfer flavoprotein beta-subunit": 0,
+                    "butyryl-COA-transferase": 0,
+                    "phoasephate butyryltransferase": 0,
+                    "butyrate kinase": 0
+                }
+                definite_BCT = "no"
+                definite_BK = "no"
+
+                # Score the available proteins by pathway
+                for protein in protein_namesCore:
+                    if has_protein(temp_dict[key], protein, threshold):
+                        total_scoreCore += 1
+                    protein_dict[protein] = highest_identity(temp_dict[key], protein)
+
+                for protein in protein_namesBCT:
+                    if has_protein(temp_dict[key], protein, threshold):
+                        total_scoreBCT += 1
+                    protein_dict[protein] = highest_identity(temp_dict[key], protein)
+
+                for protein in protein_namesBK:
+                    if has_protein(temp_dict[key], protein, threshold):
+                        total_scoreBK += 1
+                    protein_dict[protein] = highest_identity(temp_dict[key], protein)
+
+                if (total_scoreBCT + total_scoreCore == 7):
+                    definite_BCT = "yes"
+                if (total_scoreBK + total_scoreCore == 8):
+                    definite_BK = "yes"
+                row = [key, total_scoreCore, total_scoreBCT, total_scoreBK,
+                       protein_dict["thiolase"],
+                       protein_dict["beta hydroxybutyryl-CoA dehydrogenase"],
+                       protein_dict["crotonase"],
+                       protein_dict["butyryl-CoA dehydrogenase"],
+                       protein_dict["electron transfer flavoprotein alpha-subunit"],
+                       protein_dict["electron transfer flavoprotein beta-subunit"],
+                       protein_dict["butyryl-COA-transferase"],
+                       protein_dict["phoasephate butyryltransferase"],
+                       protein_dict["butyrate kinase"],
+                       definite_BCT, definite_BK]
+                write_out.writerow(row)
+    outfile.close()
+
+
+
+
+
+
+
+
+
+
+
+# Name: parseCSVOldVersion
+# Summary: Parses CSV results to score each bacteria. This version does
+#           not keep track of any results that do not reach threshold.
+# Parameters: csv_in - the csv file to score species from
+# Returns: NA
+def parseCSVOldVersion(csv_in):
     protein_namesCore = ["thiolase", "beta hydroxybutyryl-CoA dehydrogenase",
                      "crotonase", "butyryl-CoA dehydrogenase",
                      "electron transfer flavoprotein alpha-subunit",
@@ -130,12 +257,16 @@ def parseCSV(csv_in):
     threshold = 60
     temp_dict = {}
 
+
     with open(csv_in, 'r') as in_file:
         scorer = csv.reader(in_file, delimiter=',')
         row_num = 0
         for row in scorer:
+            atThreshold = False
             if row_num > 0:
                 species_name = row[2]
+                if float(row[5]) >= threshold:
+                    atThreshold = True
 
                 # Check if it matches the threshold and if it does add it
                 if float(row[5]) >= threshold:
@@ -153,8 +284,6 @@ def parseCSV(csv_in):
 
     with open("scored_results.csv", 'a', newline='') as outfile:
         write_out = csv.writer(outfile)
-
-
         for key in temp_dict:
             total_scoreCore = 0
             total_scoreBCT = 0
@@ -174,19 +303,19 @@ def parseCSV(csv_in):
             definite_BK = "no"
 
             for protein in protein_namesCore:
-                if has_protein(temp_dict[key], protein):
+                if has_protein(temp_dict[key], protein, threshold):
                     total_scoreCore += 1
                     protein_dict[protein] = highest_identity(temp_dict[key], protein)
 
 
             for protein in protein_namesBCT:
-                if has_protein(temp_dict[key], protein):
+                if has_protein(temp_dict[key], protein, threshold):
                     total_scoreBCT += 1
                     protein_dict[protein] = highest_identity(temp_dict[key], protein)
 
 
             for protein in protein_namesBK:
-                if has_protein(temp_dict[key], protein):
+                if has_protein(temp_dict[key], protein, threshold):
                     total_scoreBK += 1
                     protein_dict[protein] = highest_identity(temp_dict[key], protein)
 
@@ -210,21 +339,18 @@ def parseCSV(csv_in):
 
 
 
-
-
-
-
 def dict_contains(check_key, dict):
     for key in dict.keys():
         if key == check_key:
             return True
     return False
 
-def has_protein(list, check_protein):
+def has_protein(list, check_protein, threshold):
     for x in list:
-        if x[0] == check_protein:
+        if x[0] == check_protein and x[1] > threshold:
             return True
     return False
+
 
 
 def highest_identity(list, check_protein):
@@ -234,3 +360,9 @@ def highest_identity(list, check_protein):
             if x[1] > highest:
                 highest = x[1]
     return highest
+
+def reaches_threshold(list, threshold):
+    for x in list:
+        if x[1] > threshold:
+            return True
+    return False
