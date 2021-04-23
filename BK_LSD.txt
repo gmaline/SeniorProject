@@ -1,0 +1,34 @@
+$statistics
+   MSerror Df     Mean       CV
+  2.580217 68 3.684932 43.59119
+
+$parameters
+        test p.ajusted    name.t ntr alpha
+  Fisher-LSD      none treatment   5  0.05
+
+$means
+                 value       std  r        LCL      UCL Min Max  Q25 Q50  Q75
+Bacilli       2.333333 1.1547005  3  0.4827336 4.183933   1   3 2.00 3.0 3.00
+Bacteroidia   1.500000 0.7071068  2 -0.7665125 3.766513   1   2 1.25 1.5 1.75
+Clostridia    4.183673 1.8447388 49  3.7257688 4.641578   0   7 3.00 4.0 6.00
+Fusobacteriia 3.058824 0.7475450 17  2.2814162 3.836231   1   4 3.00 3.0 3.00
+Negativicutes 1.000000 0.0000000  2 -1.2665125 3.266513   1   1 1.00 1.0 1.00
+
+$comparison
+                              difference pvalue signif.        LCL         UCL
+Bacilli - Bacteroidia          0.8333333 0.5717         -2.0927217  3.75938840
+Bacilli - Clostridia          -1.8503401 0.0569       . -3.7567493  0.05606905
+Bacilli - Fusobacteriia       -0.7254902 0.4732         -2.7327474  1.28176702
+Bacilli - Negativicutes        1.3333333 0.3664         -1.5927217  4.25938840
+Bacteroidia - Clostridia      -2.6836735 0.0236       * -4.9959787 -0.37136820
+Bacteroidia - Fusobacteriia   -1.5588235 0.1986         -3.9549540  0.83730693
+Bacteroidia - Negativicutes    0.5000000 0.7565         -2.7053327  3.70533273
+Clostridia - Fusobacteriia     1.1248499 0.0153       *  0.2226089  2.02709100
+Clostridia - Negativicutes     3.1836735 0.0077      **  0.8713682  5.49597874
+Fusobacteriia - Negativicutes  2.0588235 0.0910       . -0.3373069  4.45495399
+
+$groups
+NULL
+
+attr(,"class")
+[1] "group"

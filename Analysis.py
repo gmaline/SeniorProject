@@ -4,6 +4,7 @@ from Bio import SeqIO
 import sys
 import os
 import csv
+import helper
 
 # Name: buildSpeciesDB
 # Summary: This builds a local nucleotide blastdb for the input species.
@@ -115,8 +116,8 @@ def openOutFile2():
                   "butyrate kinase", "definite_BCT", "definite_BK"]
         write_out.writerow(header)
 
-def openOutFile3():
-    with open("scored_results_extra.csv", 'w', newline='') as outfile:
+def openOutFile3(csv_out):
+    with open(csv_out, 'w', newline='') as outfile:
         write_out = csv.writer(outfile)
 
         header = ["species", "core", "BCT", "BK", "thiolase",
@@ -132,7 +133,7 @@ def openOutFile3():
 # Summary: Parses CSV results to score each bacteria.
 # Parameters: csv_in - the csv file to score species from
 # Returns: NA
-def parseCSV(csv_in):
+def parseCSV(csv_in, csv_out, threshold):
     protein_namesCore = ["thiolase", "beta hydroxybutyryl-CoA dehydrogenase",
                          "crotonase", "butyryl-CoA dehydrogenase",
                          "electron transfer flavoprotein alpha-subunit",
@@ -140,7 +141,7 @@ def parseCSV(csv_in):
     protein_namesBCT = ["butyryl-COA-transferase"]
     protein_namesBK = ["phoasephate butyryltransferase", "butyrate kinase"]
     # the cutoff for identity that will be considered for a protein score
-    threshold = 60
+
     temp_dict = {}
 
     current_species = ""
@@ -164,7 +165,7 @@ def parseCSV(csv_in):
             if row_num > 0:
                 species_name = row[2]
 
-                if not dict_contains(species_name, temp_dict):
+                if not helper.dict_contains(species_name, temp_dict):
                     temp_dict[species_name] = []
 
                 # Save results in a temporary list and create new entry
@@ -174,7 +175,7 @@ def parseCSV(csv_in):
             row_num += 1
     in_file.close()
 
-    with open("scored_results_extra.csv", 'a', newline='') as outfile:
+    with open(csv_out, 'a', newline='') as outfile:
         write_out = csv.writer(outfile)
 
         for key in temp_dict.keys():
@@ -271,7 +272,7 @@ def parseCSVOldVersion(csv_in):
                 # Check if it matches the threshold and if it does add it
                 if float(row[5]) >= threshold:
                     # Create an empty list if there is not already an entry
-                    if not dict_contains(species_name, temp_dict):
+                    if not helper.dict_contains(species_name, temp_dict):
                         temp_dict[species_name] = []
 
                     # Save results in a temporary list and create new entry
@@ -339,11 +340,7 @@ def parseCSVOldVersion(csv_in):
 
 
 
-def dict_contains(check_key, dict):
-    for key in dict.keys():
-        if key == check_key:
-            return True
-    return False
+
 
 def has_protein(list, check_protein, threshold):
     for x in list:

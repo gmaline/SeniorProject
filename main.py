@@ -37,12 +37,17 @@ if __name__ == '__main__':
     # formatSpecies.file_info(names)
     # Control.run_control()
 
-    Analysis.openOutFile2()
-    Analysis.openOutFile3()
+    out = "scored_results_50.csv"
+    Analysis.openOutFile3(out)
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     for letter in alphabet:
-        Analysis.parseCSV("CSVResults\\" + letter + ".csv")
-        Analysis.parseCSVOldVersion("CSVResults\\" + letter + ".csv")
+        Analysis.parseCSV("CSVResults\\" + letter + ".csv", out, 50)
+
+    out = "scored_results_60.csv"
+    Analysis.openOutFile3(out)
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    for letter in alphabet:
+        Analysis.parseCSV("CSVResults\\" + letter + ".csv", out, 60)
 
 
 
