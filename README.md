@@ -8,6 +8,7 @@ In this project we explore genomes from HMP 1 to attempt to identify species tha
 Species = http://downloads.ihmpdcc.org/data/reference_genomes/body_sites/Gastrointestinal_tract.cds.fsa ("Gastrointestinal_tract.cds.fsa")
 Pathway Proteins = https://www.ncbi.nlm.nih.gov/nuccore/DQ987697.1?report=fasta** (Save as "butyrate_genes_BTC&BK.fasta"), 
 https://www.ncbi.nlm.nih.gov/nuccore/AY796317.2?report=fasta** (Save as "butyryl_COA_transferase_BCT.fasta"), https://www.ncbi.nlm.nih.gov/protein/WP_003420701.1?report=fasta (Save as "phosphate_butyryltransferase_BK.fasta", https://www.ncbi.nlm.nih.gov/protein/WP_003722496.1?report=fasta (Save as "butyrate_kinase_BK.fasta")
+
 ** partial CDS that will be translated to protein sequence during formatting.
 
 ## HOW TO USE:
