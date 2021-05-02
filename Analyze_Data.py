@@ -3,7 +3,10 @@ from Bio import SeqIO
 import re
 import helper
 
-# preps for ANOVA data format.
+# Name: pullTaxonomy
+# Summary: Creates a csv file with taxon info for each of the species.
+# Parameters: fasta_in - the fasta files batch downloaded from Silva
+# Returns: NA
 def pullTaxonomy(fasta_in):
     with open("taxon_info.csv", 'w', newline='') as outFile:
         taxon_writer = csv.writer(outFile)
@@ -24,6 +27,12 @@ def pullTaxonomy(fasta_in):
             taxon_writer.writerow([domain, phylum, classx, order, family, genus, species, species_formatted])
     outFile.close()
 
+# Name: formatDataforANOVA
+# Summary: formats data to work with an ANOVA R file that I already had.
+#          pulls from the taxon info to put into ANOVA groups.
+# Parameters: inFileScore - the results file from the Alignment Step
+#             inFileTaxon - the taxon file made from pullTaxonomy
+# Returns: NA
 def formatDataforANOVA(inFileScore, inFileTaxon):
     taxon_dict = {}
     with open(inFileTaxon, 'r') as taxonomy:
@@ -66,26 +75,30 @@ def formatDataforANOVA(inFileScore, inFileTaxon):
         print(classxBCTScores)
 
 
-        with open("BK_ANOVA.csv", 'w', newline='') as Out_BK:
-            writeBK = csv.writer(Out_BK)
+        with open("BK_ANOVA.csv", 'w', newline='') as out_BK:
+            writeBK = csv.writer(out_BK)
             for c in classxBKScores.keys():
                 row = []
                 row.append(c)
                 for x in classxBKScores[c]:
                     row.append(x)
                 writeBK.writerow(row)
-        Out_BK.close()
-        with open("BCT_ANOVA.csv", 'w', newline='') as Out_BCT:
-            writeBCT = csv.writer(Out_BCT)
+        out_BK.close()
+        with open("BCT_ANOVA.csv", 'w', newline='') as out_BCT:
+            writeBCT = csv.writer(out_BCT)
             for c in classxBCTScores.keys():
                 row = []
                 row.append(c)
                 for x in classxBCTScores[c]:
                     row.append(x)
                 writeBCT.writerow(row)
-        Out_BCT.close()
+        out_BCT.close()
 
-
+# Name: formatDataforPhylogeny
+# Summary: Creates a fasta file with headers that make better identifiers
+#            for the phylogenetic analysis.
+# Parameters: inFileSilva - the batch download file from Silva.
+# Returns: NA
 def formatDataforPhylogeny(inFileSilva):
     outfileSpecies = open("Silva_16s_Sequences_Species.fasta", 'w')
     outfileClass = open("Silva_16s_Sequences_Class.fasta", 'w')
@@ -108,6 +121,6 @@ def formatDataforPhylogeny(inFileSilva):
 
 
 
-#pullTaxonomy("Silva_16s_Sequences.fasta")
-#formatDataforANOVA("scored_results_60.csv", "taxon_info.csv")
+pullTaxonomy("Silva_16s_Sequences.fasta")
+formatDataforANOVA("scored_results_60.csv", "taxon_info.csv")
 formatDataforPhylogeny("Silva_16s_Sequences.fasta")

@@ -6,7 +6,7 @@
 import formatPathwayGenes
 import formatSpecies
 import Control
-import Analysis
+import Align
 import csv
 
 def run(letter):
@@ -14,40 +14,35 @@ def run(letter):
     with open("Species\\files_info.csv", 'r') as species_in:
         read_species = csv.reader(species_in, delimiter=',')
 
-        Analysis.openOutFile(csv_out)
+        Align.openOutFile(csv_out)
 
         for row in read_species:
             if row[0][0] == letter:
                 current_species = row[0]
-                db = Analysis.buildSpeciesDB(row[0])
+                db = Align.buildSpeciesDB(row[0])
                 for protein in protein_names:
-                    results = Analysis.alignSequence(current_species, protein, db)
-                    Analysis.parseResults(results, current_species, protein, csv_out)
+                    results = Align.alignSequence(current_species, protein, db)
+                    Align.parseResults(results, current_species, protein, csv_out)
                     print(current_species + ": " + protein)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # formatPathwayGenes.separatePathwaySequences()
-    # names = formatSpecies.separateSpecies()
-    # formatSpecies.file_info(names)
-    # Control.run_control()
+
 
     out = "scored_results_50.csv"
-    Analysis.openOutFile3(out)
+    Align.openOutFile3(out)
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     for letter in alphabet:
-        Analysis.parseCSV("CSVResults\\" + letter + ".csv", out, 50)
+        Align.parseCSV("CSVResults\\" + letter + ".csv", out, 50)
 
     out = "scored_results_60.csv"
-    Analysis.openOutFile3(out)
+    Align.openOutFile3(out)
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     for letter in alphabet:
-        Analysis.parseCSV("CSVResults\\" + letter + ".csv", out, 60)
+        Align.parseCSV("CSVResults\\" + letter + ".csv", out, 60)
 
 
 
@@ -65,14 +60,14 @@ if __name__ == '__main__':
     # with open("Species\\control_files_info.csv", 'r') as species_in:
     #     read_species = csv.reader(species_in, delimiter=',')
     #
-    #     Analysis.openOutFile(csv_out)
+    #     Align.openOutFile(csv_out)
     #
     #     for row in read_species:
     #         current_species = row[0]
-    #         db = Analysis.buildSpeciesDB(row[0])
+    #         db = Align.buildSpeciesDB(row[0])
     #         for protein in protein_names:
-    #             results = Analysis.alignSequence(current_species, protein, db)
-    #             Analysis.parseResults(results, current_species, protein, csv_out)
+    #             results = Align.alignSequence(current_species, protein, db)
+    #             Align.parseResults(results, current_species, protein, csv_out)
     #             print(current_species + ": " + protein)
 
     # Species that start with A: Run on 3/15/2021 at 4:50 pm
@@ -80,15 +75,15 @@ if __name__ == '__main__':
     # with open("Species\\files_info.csv", 'r') as species_in:
     #     read_species = csv.reader(species_in, delimiter=',')
     #
-    #     Analysis.openOutFile(csv_out)
+    #     Align.openOutFile(csv_out)
     #
     #     for row in read_species:
     #         if row[0][0] == 'A':
     #             current_species = row[0]
-    #             db = Analysis.buildSpeciesDB(row[0])
+    #             db = Align.buildSpeciesDB(row[0])
     #             for protein in protein_names:
-    #                 results = Analysis.alignSequence(current_species, protein, db)
-    #                 Analysis.parseResults(results, current_species, protein, csv_out)
+    #                 results = Align.alignSequence(current_species, protein, db)
+    #                 Align.parseResults(results, current_species, protein, csv_out)
     #                 print(current_species + ": " + protein)
 
     # # Species that start with B: Run on 3/15/2021 at 5:15 pm
@@ -97,15 +92,15 @@ if __name__ == '__main__':
     # with open("Species\\files_info.csv", 'r') as species_in:
     #     read_species = csv.reader(species_in, delimiter=',')
     #
-    #     Analysis.openOutFile(csv_out)
+    #     Align.openOutFile(csv_out)
     #
     #     for row in read_species:
     #         if row[0][0] == letter:
     #             current_species = row[0]
-    #             db = Analysis.buildSpeciesDB(row[0])
+    #             db = Align.buildSpeciesDB(row[0])
     #             for protein in protein_names:
-    #                 results = Analysis.alignSequence(current_species, protein, db)
-    #                 Analysis.parseResults(results, current_species, protein, csv_out)
+    #                 results = Align.alignSequence(current_species, protein, db)
+    #                 Align.parseResults(results, current_species, protein, csv_out)
     #                 print(current_species + ": " + protein)
 
     # # Species that start with C: Run on 3/15/2021 at 5:35 pm
@@ -114,15 +109,15 @@ if __name__ == '__main__':
     # with open("Species\\files_info.csv", 'r') as species_in:
     #     read_species = csv.reader(species_in, delimiter=',')
     #
-    #     Analysis.openOutFile(csv_out)
+    #     Align.openOutFile(csv_out)
     #
     #     for row in read_species:
     #         if row[0][0] == letter:
     #             current_species = row[0]
-    #             db = Analysis.buildSpeciesDB(row[0])
+    #             db = Align.buildSpeciesDB(row[0])
     #             for protein in protein_names:
-    #                 results = Analysis.alignSequence(current_species, protein, db)
-    #                 Analysis.parseResults(results, current_species, protein, csv_out)
+    #                 results = Align.alignSequence(current_species, protein, db)
+    #                 Align.parseResults(results, current_species, protein, csv_out)
     #                 print(current_species + ": " + protein)
 
     # # Species that start with D: Run on 3/15/2021 at 6:39 pm
@@ -131,15 +126,15 @@ if __name__ == '__main__':
     # with open("Species\\files_info.csv", 'r') as species_in:
     #     read_species = csv.reader(species_in, delimiter=',')
     #
-    #     Analysis.openOutFile(csv_out)
+    #     Align.openOutFile(csv_out)
     #
     #     for row in read_species:
     #         if row[0][0] == letter:
     #             current_species = row[0]
-    #             db = Analysis.buildSpeciesDB(row[0])
+    #             db = Align.buildSpeciesDB(row[0])
     #             for protein in protein_names:
-    #                 results = Analysis.alignSequence(current_species, protein, db)
-    #                 Analysis.parseResults(results, current_species, protein, csv_out)
+    #                 results = Align.alignSequence(current_species, protein, db)
+    #                 Align.parseResults(results, current_species, protein, csv_out)
     #                 print(current_species + ": " + protein)
 
     # Species that start with E: Run on 3/15/2021 at 6:44 pm, 7:02

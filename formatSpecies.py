@@ -1,10 +1,13 @@
 import re
 from Bio import SeqIO
-from pathlib import Path
 
-def separateSpecies():
-    file = Path(r'C:\Users\User\Desktop\Senior_Project\Gastrointestinal_tract.cds.fsa')
 
+# Name: separateSpecies
+# Summary: parses large fasta file and separates according to species.
+#          inserts separated fastas in a folder called "Species"
+# Parameters: file - the name of the fasta file in this directory
+# Returns: names - a list of the file names it creates.
+def separateSpecies(file):
     names = []
     # Parse through the records in this large file and break them into individual files
     # for each species
@@ -28,8 +31,12 @@ def separateSpecies():
         outfile.close()
     return names
 
-#Creats a file with a compilation of all of the file names and the number of records in each.
-def file_info(names):
+# Name: fileInfo
+# Summary: creates metadata for the resulting separated fasta files and
+#           how many records are in each.
+# Parameters: names - a list of the names of all the files made
+# Returns: NA
+def fileInfo(names):
     files = {}
     #Create a record in the dictionary for each file and set to 0
     for name in names:
