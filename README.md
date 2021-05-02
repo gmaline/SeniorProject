@@ -15,14 +15,14 @@ https://www.ncbi.nlm.nih.gov/nuccore/AY796317.2?report=fasta** (Save as "butyryl
 ### Step 1 - Data formatting
 1. Collect data from HMP
 2. Collect data from NCBI
-3. run DataFormatting.py --> Creates .fasta files for all protein sequences and all species
+3. run DataFormatting.py --> Creates fasta files for all protein sequences and all species
 
 ### Step 2 - Alignments
-1. run RunAlignments.py --> creates xml files for each alignment, csv files for unprocessed results, and csv files for scored results
+1. run RunAlignments.py --> Creates xml files for each alignment, csv files for unprocessed results, and csv files for scored results
 
 ### Step 3 - Analyses
 1. pull 16s rRNA data and taxon info from Silva Database (batch download)
-2. run Analyze_Data.py --> Creates output files for labeling taxon info, for formating input ANOVA files, and for running the multiple sequence alignment on Clustal Omega
+2. run Analyze_Data.py --> Creates csv output files for labeling taxon info, for formating input ANOVA files, and a fasta file for running the multiple sequence alignment on Clustal Omega
 3. Run ANOVA.R with the output files from step 2
 4. Run Clustal Omega multiple sequence alignment with output files from step 2
 5. Interpret results with output taxon files from step 2, from the phylogenetic analysis, and from the ANOVA.
